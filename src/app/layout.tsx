@@ -16,12 +16,6 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   const { i18n } = useTranslation();
 
-  const [langReady, setLangReady] = useState(false);
-
-  useEffect(() => {
-    setLangReady(true);
-  }, []);
-
   const lang = i18n.language as "en" | "ar";
   const direction = lang === "ar" ? "rtl" : "ltr";
 
@@ -40,6 +34,12 @@ export default function RootLayout({ children }: RootLayoutProps) {
   const toggleLang = () => {
     i18n.changeLanguage(lang === "en" ? "ar" : "en");
   };
+
+  const [langReady, setLangReady] = useState(false);
+
+  useEffect(() => {
+    setLangReady(true);
+  }, []);
 
   if (!langReady)
     return (
