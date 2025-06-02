@@ -6,8 +6,10 @@ import {
   Document,
   Model,
 } from "mongoose";
+import { SignJWT } from "jose";
 
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
+import { JwtPayloadType } from "@/utils/types";
 
 const userSchema = new Schema(
   {
@@ -68,6 +70,20 @@ userSchema.methods.comparePassword = async function (
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
+userSchema.methods.signJwt = async function () {
+  const payload: JwtPayloadType = { id: this._id.toString() };
+  const token = await new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256", type: "JWT" })
+    .setExpirationTime("3d")
+    .sign(
+      new TextEncoder().encode(
+        process.env.JWT_SECRET_KEY || "this_my_secret_key"
+      )
+    );
+
+  return token;
+};
+
 // to delete password in this case ==> res.json(user)
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
@@ -77,13 +93,15 @@ userSchema.methods.toJSON = function () {
 
 type UserSchemaType = InferSchemaType<typeof userSchema>;
 
-interface UserDocument extends Document, UserSchemaType {
+export interface UserDocument extends Document, UserSchemaType {
   comparePassword(candidatePassword: string): Promise<boolean>;
+  signJwt(): Promise<string>;
 }
 
 interface UserModel extends Model<UserDocument> {}
 
-const User = (models.User as UserModel) ||
+const User =
+  (models.User as UserModel) ||
   model<UserDocument, UserModel>("User", userSchema);
 
 export default User;
