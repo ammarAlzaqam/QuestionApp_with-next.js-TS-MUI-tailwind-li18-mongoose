@@ -48,12 +48,26 @@ export const UpdateUserSchema = z.object({
 });
 
 export const UpdateUserPassSchema = z.object({
-  password: z
-    .string()
-    .max(100, "Password must not exceed 100 characters"),
+  password: z.string().max(100, "Password must not exceed 100 characters"),
 
   newPassword: z
     .string()
     .min(6, "Password must be at least 6 characters")
     .max(100, "Password must not exceed 100 characters"),
+});
+
+export const CreateTagSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Tag name must be at least 2 characters")
+    .max(100, "Tag name must not exceed 100 characters")
+    .trim(),
+
+  description: z
+    .string()
+    .min(2, "Description must be at least 2 characters")
+    .max(200, "Description must not exceed 200 characters")
+    .trim(),
+
+  slug: z.string().trim().optional(),
 });

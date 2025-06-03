@@ -18,3 +18,9 @@ export interface UpdateUserPassDto {
   password: string;
   newPassword: string;
 }
+
+export interface CreateTagDto {
+  name: string;
+  description: string;
+  slug?: string;
+}
