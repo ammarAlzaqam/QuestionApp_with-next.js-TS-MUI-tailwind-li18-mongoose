@@ -21,6 +21,8 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
 
+    await connectDB();
+    
     //* if no slug provide, slug depended on tag name
     if (!body.slug) {
       const tag = await Tag.findOne({ name: body.name });
@@ -42,7 +44,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    await connectDB();
     await Tag.create(body);
     return NextResponse.json(
       { message: "Tag created successfully" },
