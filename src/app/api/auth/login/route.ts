@@ -27,10 +27,13 @@ export async function POST(request: NextRequest) {
     const user = (await User.findOne({ email }).select(
       "+password"
     )) as UserDocument;
-    if (!user || (await user?.comparePassword(password!)))
-      return NextResponse.json({
-        message: "Your email or password is not correct",
-      });
+    if (!user || !(await user?.comparePassword(password)))
+      return NextResponse.json(
+        {
+          message: "Your email or password is not correct",
+        },
+        { status: 400 }
+      );
 
     // set token in header cookie
     const token = await user.signJwt();

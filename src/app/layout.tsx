@@ -4,16 +4,20 @@ import "@/utils/translation/i18n";
 import { useTranslation } from "react-i18next";
 
 import { useEffect, useMemo, useState } from "react";
-import { Button, CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { CacheProvider } from "@emotion/react";
 import createEmotionCache from "@/utils/emotionCache";
 import getAppTheme from "@/theme";
-
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import Header from "@/components/Header/Header";
+import Footer from "@/components/Footer";
 interface RootLayoutProps {
   readonly children: React.ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
+  //TODO>> language sitting
   const { i18n } = useTranslation();
 
   const lang = i18n.language as "en" | "ar";
@@ -31,16 +35,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
     document.documentElement.dir = direction;
   }, [lang, direction]);
 
-  const toggleLang = () => {
-    i18n.changeLanguage(lang === "en" ? "ar" : "en");
-  };
-
+  //! check rendering...
   const [langReady, setLangReady] = useState(false);
-
   useEffect(() => {
     setLangReady(true);
   }, []);
-
   if (!langReady)
     return (
       <html lang="en">
@@ -58,17 +57,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <CacheProvider value={emotionCache}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <header>
-              <nav className="p-4 flex justify-center items-center">
-                <Button variant="contained" sx={{ ml: 1 }} onClick={toggleLang}>
-                  {lang === "en" ? "العربية" : "English"}
-                </Button>
-              </nav>
-            </header>
+            <Header lang={lang} />
 
-            <main className="container mx-auto p-5 grow">{children}</main>
+            <main className="container bg-black mx-auto p-5 flex flex-col grow">
+              {children}
+              <ToastContainer position="top-center" theme="dark" />
+            </main>
 
-            <footer>footer</footer>
+            <Footer />
           </ThemeProvider>
         </CacheProvider>
       </body>

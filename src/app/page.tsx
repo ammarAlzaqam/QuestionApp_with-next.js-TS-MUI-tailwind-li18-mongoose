@@ -1,7 +1,7 @@
 import ClientHomePage from "./ClientHomePage";
 export default function HomePage() {
   return (
-    <section>
+    <section className="grow flex">
       <ClientHomePage />
     </section>
   );

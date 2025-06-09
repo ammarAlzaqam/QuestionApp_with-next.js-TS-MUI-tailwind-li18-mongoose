@@ -1,5 +1,6 @@
 {
   "app.name": "Next.IO",
+  "app.lang": "English",
   "header.login": "تسجيل الدخول",
   "header.profile": "الملف الشخصي",
   "header.logout": "تسجيل الخروج",
