@@ -7,19 +7,20 @@ import { useTranslation } from "react-i18next";
 import CachedIcon from "@mui/icons-material/Cached";
 import { getUserData } from "@/utils/apiRequests";
 import { UserDocument } from "@/models/user";
+import { useUserStore } from "@/stores/userStore";
 
 type FiledType = "name" | "email";
 
 export default function ProfileForm() {
-  const [user, setUser] = useState<UserDocument | null>(null);
+  const user = useUserStore((state) => state.user);
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-  const formik = useRegisterFormik(setLoading, user);
+  const formik = useRegisterFormik(setLoading);
   const getFieldError = (type: FiledType): string =>
     formik.touched[type] && formik.errors[type] ? formik.errors[type] : "";
 
   useEffect(() => {
-    getUserData(setUser);
+    getUserData();
   }, []);
 
   return (

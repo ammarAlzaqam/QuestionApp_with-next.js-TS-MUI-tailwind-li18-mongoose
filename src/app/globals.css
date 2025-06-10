@@ -8,4 +8,48 @@
   scroll-behavior: smooth;
 }
 
+.editor-wrapper .ck-editor__editable {
+  min-height: 300px;
+  background-color: black !important;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  @media (max-width: 678px) {
+    min-height: 150px;
+  }
+}
+
+.editor-wrapper[dir="rtl"] .ck-editor__editable {
+  direction: rtl;
+  text-align: right;
+}
+
+.editor-wrapper[dir="ltr"] .ck-editor__editable {
+  direction: ltr;
+  text-align: left;
+}
+
+.ck-content h1 {
+  font-size: 2rem; /* أو اللي يناسبك */
+  font-weight: bold;
+}
+
+.ck-content h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.ck-content h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.ck-content a {
+  color: #5b96e0;
+  text-decoration: underline;
+}
+
+h1 {
+  @apply text-4xl font-bold;
+}
+
 @import "tailwindcss";

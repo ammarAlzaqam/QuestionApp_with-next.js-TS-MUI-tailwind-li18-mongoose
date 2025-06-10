@@ -3,13 +3,13 @@ import React from "react";
 import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { UserDocument } from "@/models/user";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/stores/userStore";
 export default function useProfileFormik(
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>,
-  user: UserDocument | null
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   const router = useRouter();
+  const user = useUserStore((state) => state.user);
   return useFormik({
     initialValues: {
       name: user?.name || "",
@@ -27,13 +27,13 @@ export default function useProfileFormik(
     onSubmit: async (values) => {
       try {
         setLoading(true);
-        const res = await axios.patch(
+        const { data } = await axios.patch(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/profile`,
           values
         );
         setLoading(false);
-        router.push(`/profile/update?name=${values.name}&email=${values.email}`);
-        toast.success(res.data.message);
+        useUserStore.getState().setUser(data.user);
+        toast.success(data.message);
       } catch (e: any) {
         console.error(`Error in RegisterFrom: ${e}`);
         toast.error(e.response?.data.message);

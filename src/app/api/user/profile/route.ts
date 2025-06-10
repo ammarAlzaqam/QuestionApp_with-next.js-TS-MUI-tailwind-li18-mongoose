@@ -19,8 +19,8 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ message: "Invalid User Id" }, { status: 400 });
 
     //! validation data input
-    const {name, email} = (await request.json()) as UpdateUserDto;
-    const validation = UpdateUserSchema.safeParse({name, email});
+    const { name, email } = (await request.json()) as UpdateUserDto;
+    const validation = UpdateUserSchema.safeParse({ name, email });
     if (!validation.success)
       return NextResponse.json(
         { message: validation.error.issues[0].message },
@@ -28,9 +28,13 @@ export async function PATCH(request: NextRequest) {
       );
 
     await connectDB();
-    await User.findByIdAndUpdate(userId, {name, email});
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { name, email },
+      { new: true }
+    );
     return NextResponse.json(
-      { message: "User updated successfully" },
+      { message: "User updated successfully", user: updatedUser },
       { status: 200 }
     );
   } catch (e) {

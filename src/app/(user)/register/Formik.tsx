@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/stores/userStore";
 export default function useRegisterFormik(
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) {
@@ -30,12 +31,13 @@ export default function useRegisterFormik(
     onSubmit: async (values, { resetForm }) => {
       try {
         setLoading(true);
-        const res = await axios.post(
+        const { data } = await axios.post(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/register`,
           values
         );
         router.replace("/");
-        toast.success(res.data.message);
+        toast.success(data.message);
+        useUserStore.getState().setUser(data.user);
         resetForm();
         setLoading(false);
       } catch (e: any) {

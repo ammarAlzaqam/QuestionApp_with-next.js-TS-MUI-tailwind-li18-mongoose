@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     const token = await user.signJwt();
     const cookie = setAuthCookie(token);
     return NextResponse.json(
-      { message: "You login successfully" },
+      { message: "You login successfully", user },
       { status: 200, headers: { "Set-Cookie": cookie } }
     );
   } catch (e) {

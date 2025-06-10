@@ -9,15 +9,15 @@ interface HeaderProps {
 }
 
 export default function Navbar({ lang }: HeaderProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const toggleLang = () => {
-    i18n.changeLanguage(lang === "en" ? "ar" : "en");
+    i18n.changeLanguage(i18n.language === "en" ? "ar" : "en");
   };
 
   return (
     <nav className="flex items-center gap-2 sx:gap-5">
       <Link href={"/"}>{t("app.name")}</Link>
-      <Button variant="contained" sx={{ ml: 1 }} onClick={toggleLang}>
+      <Button variant="contained" sx={{ ml: 1 }} size="small" onClick={toggleLang}>
         {t("app.lang")}
       </Button>
     </nav>

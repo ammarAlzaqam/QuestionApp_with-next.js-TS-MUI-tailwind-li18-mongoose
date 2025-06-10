@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/stores/userStore";
 export default function useLoginFormik(
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) {
@@ -26,12 +27,13 @@ export default function useLoginFormik(
     onSubmit: async (values, { resetForm }) => {
       try {
         setLoading(true);
-        const res = await axios.post(
+        const { data } = await axios.post(
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/login`,
           values
         );
         router.replace("/");
-        toast.success(res.data.message);
+        useUserStore.getState().setUser(data.user);
+        toast.success(data.message);
         resetForm();
         setLoading(false);
       } catch (e: any) {

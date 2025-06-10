@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     const token = await newUser.signJwt();
     const cookie = setAuthCookie(token);
     return NextResponse.json(
-      { message: "User Created Successfully" },
+      { message: "User Created Successfully", newUser },
       { status: 201, headers: { "Set-Cookie": cookie } }
     );
   } catch (e) {
