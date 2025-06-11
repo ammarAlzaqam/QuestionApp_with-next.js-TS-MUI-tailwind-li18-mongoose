@@ -9,8 +9,8 @@
 }
 
 .editor-wrapper .ck-editor__editable {
-  min-height: 300px;
-  background-color: black !important;
+  min-height: 250px;
+  background-color: #121212b1 !important;
   padding: 1rem;
   border-radius: 0.5rem;
   @media (max-width: 678px) {
@@ -50,6 +50,18 @@
 
 h1 {
   @apply text-4xl font-bold;
+}
+
+h2 {
+  @apply text-3xl font-semibold;
+}
+
+h3 {
+  @apply text-2xl font-medium;
+}
+
+a {
+  color: #5b96e0;
 }
 
 @import "tailwindcss";

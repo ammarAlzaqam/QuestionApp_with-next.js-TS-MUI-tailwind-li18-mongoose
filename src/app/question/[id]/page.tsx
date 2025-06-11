@@ -21,11 +21,10 @@ export default async function Question({ params }: QuestionProps) {
     cache: "no-store",
   });
   const user = await res.json();
-  console.log(user);
   return (
     <div className="flex flex-col gap-5">
       <QuestionData question={question} />
-      <Divider variant="middle" />
+      <Divider variant="middle" sx={{bgcolor: "#6facda"}} />
       <Answers answers={question.answers} />
       {user?._id && <AddAnswer QId={question._id} />}
     </div>

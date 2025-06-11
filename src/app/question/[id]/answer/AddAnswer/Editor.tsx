@@ -5,20 +5,19 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-export default function TextEditor(
-  {
+export default function TextEditor({
   value = "",
   onChange,
+  onBlur,
 }: {
   value: string;
   onChange: (data: string) => void;
-}  
-) {
-
+  onBlur?: () => void
+}) {
   const { i18n } = useTranslation();
   return (
     <div
-      className="w-full editor-wrapper"
+      className="editor-wrapper w-full"
       dir={i18n.language === "ar" ? "rtl" : "ltr"}
     >
       <CKEditor
@@ -35,6 +34,7 @@ export default function TextEditor(
           const data = editor.getData();
           onChange(data);
         }}
+        onBlur={onBlur}
       />
     </div>
   );
