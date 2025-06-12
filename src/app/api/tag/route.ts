@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
       );
 
     await connectDB();
-    
+
     //* if no slug provide, slug depended on tag name
     if (!body.slug) {
       const tag = await Tag.findOne({ name: body.name });
