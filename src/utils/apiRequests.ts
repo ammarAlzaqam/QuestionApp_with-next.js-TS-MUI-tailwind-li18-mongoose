@@ -20,11 +20,12 @@ export const getPosts = async (
   setPosts: React.Dispatch<React.SetStateAction<PostDocument[] | null>>,
   setPages: React.Dispatch<React.SetStateAction<number>>,
   pageNumber: number = 1,
-  sort: number = -1
+  sort: number = -1,
+  tag: string = ""
 ) => {
   try {
     const { data } = await axios.get(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/post?pageNumber=${pageNumber}&sort=${sort}`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/post?pageNumber=${pageNumber}&sort=${sort}&tag=${tag}`
     );
     setPosts(data.posts);
     setPages(data.pages);
@@ -64,5 +65,22 @@ export const makeVote = async (
     router.refresh();
   } catch (e) {
     console.log(e);
+  }
+};
+
+export const getAllTags = async () => {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/tag`,
+      {
+        cache: "no-store",
+      }
+    );
+    if (!response.ok)
+      throw new Error("Can't fetch tags. Please try again later.");
+
+    return await response.json();
+  } catch (e) {
+    throw new Error("Some thing went wrong. Please try again later.");
   }
 };
