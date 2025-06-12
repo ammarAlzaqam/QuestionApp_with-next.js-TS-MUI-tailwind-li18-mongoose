@@ -19,7 +19,7 @@ export default function Sort({ pageNumber = 1 }: SortProps) {
   return (
     <div className="mb-5">
       <div className="flex justify-between items-center mb-5">
-        <ButtonGroup>
+        <ButtonGroup size="small">
           <Button sx={{ color: "white" }} onClick={() => navigation(-1)}>
             {t("btn.newest")}
           </Button>
@@ -28,11 +28,15 @@ export default function Sort({ pageNumber = 1 }: SortProps) {
           </Button>
         </ButtonGroup>
         <Link href="/tag" passHref>
-          <Button color="warning">{t("title.tags")}</Button>
+          <Button size="small" color="warning">
+            {t("title.tags")}
+          </Button>
         </Link>
         {user && (
           <Link href="/question/ask" passHref>
-            <Button variant="contained">{t("btn.ask")}</Button>
+            <Button size="small" variant="contained">
+              {t("btn.ask")}
+            </Button>
           </Link>
         )}
       </div>
