@@ -1,9 +1,10 @@
 import { PostDocument } from "@/models/post";
+import { TagDocument } from "@/models/tag";
 import { useUserStore } from "@/stores/userStore";
 import axios from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { notFound } from "next/navigation";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 export const getUserData = async () => {
   try {
@@ -68,19 +69,15 @@ export const makeVote = async (
   }
 };
 
-export const getAllTags = async () => {
+export const getAllTags = async (
+  setTags: Dispatch<SetStateAction<TagDocument[] | null>>
+) => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/tag`,
-      {
-        cache: "no-store",
-      }
+    const { data } = await axios.get(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/tag`
     );
-    if (!response.ok)
-      throw new Error("Can't fetch tags. Please try again later.");
-
-    return await response.json();
-  } catch (e) {
-    throw new Error("Some thing went wrong. Please try again later.");
+    setTags(data);
+  } catch (e: any) {
+    throw new Error(`Error in fetch all Tags: ${e.response?.data.message}`);
   }
 };
